@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Введение</title>
+</head>
+<body>
+  <div id="container">Введение</div>
+  <script>
+    const element = document.createElement('div');
+    const container = document.querySelector('#container');
+
+    container.appendChild(element);
+    element.textContent = 'Text is inside of div';
+
+    const element2 = document.createElement('span');
+    element2.textContent = 'Text is inside span';
+    container.appendChild(element2);
+  </script>
+</body>
+</html>

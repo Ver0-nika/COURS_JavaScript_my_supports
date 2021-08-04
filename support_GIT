@@ -1,0 +1,68 @@
+Полезные ссылки по теме:
+Официальный сайт GIT
+https://git-scm.com/
+Документация по командам
+https://git-scm.com/docs
+Онлайн-версия "Pro GIT" (на русском языке)
+https://git-scm.com/book/ru/v2
+Система контроля версий Git. Часть 1
+https://loftbooks.ru/git
+Система контроля версий Git. Часть 2
+https://loftbooks.ru/git-2
+Система контроля версий Git. Справочник
+https://loftbooks.ru/git-reference
+Статья - Настройка SSH ключей
+https://loftschool.com/blog/posts/78-nastroyka-dostupa-po-ssh-k-neskolkim-profilyam-na-github-s-odnogo-kompyutera/
+
+
+// Удалить папку .git
+rm -r .git
+
+// проинициализируем репозиторий
+git init
+
+// Устанавливаем зависимости
+npm install
+
+// перейти на другую ветку (установить HEAD на другую ветку)
+git checkout ИМЯ_ВЕТКИ
+
+// создать новую ветку
+git branch ИМЯ_ВЕТКИ
+
+// Создать новую ветку и сразу на нее перейти
+git checkout -b ИМЯ_ВЕТКИ
+
+// посмотреть информацию о ветках
+git branch
+
+// посмотреть историю коммитов
+git log
+
+// посмотреть историю изменений и неотслеживаемые файлы
+git status
+
+// добавить все изменения в отслеживание (индекс)
+git add .
+
+// закомитить
+git commit -m 'text'
+
+// Добавляем remote url сборке
+//где USERNAME - ваш ник на Github, а REPOSITORY - название созданного вами репозитория.
+git remote add origin https://github.com/USERNAME/REPOSITORY.git
+или
+git remote set-url origin ССЫЛКА_НА_РЕПОЗИТОРИЙ_GitHub
+
+// отправить на gitHub (git push удалённый_репозиторий ветка)
+// Ключ -u (upstream) здесь указывает на то, что мы заливаем на сервер ту ветку (master), которой там ещё нет
+git push -u origin master
+
+// Проверить адреc можно командой
+git remote -v
+
+// удалить ветку
+git branch -d ИМЯ_ВЕТКИ
+
+// слить ветки
+git merge ИМЯ_ВЕТКИ

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Promise</title>
+</head>
+<body>
+<script>
+  const url1 = 'https://www.dispatchnewsdesk.com/wp-content/uploads/2018/08/kosmos-14.jpg';
+  const url2 = 'https://www.onlinetambov.ru/upload/iblock/d1f/d1f42f1a1a3a824b5d0dc31ea773b905.jpg';
+  const url3 = 'https://cdnimg.rg.ru/img/content/213/70/99/iStock-1148609295_d_850.jpg';
+
+  // загрузка картинок строго одна за другой по принципу CALLBACK
+  const img = new Image();
+  img.height = 200;
+  img.src = url1;
+
+  img.addEventListener('load', () => {  // load - свойство объекта img
+      const img = new Image();
+      img.height = 200;
+      img.src = url2;
+      document.body.append(img);
+
+      img.addEventListener('load', () => {
+          const img = new Image();
+          img.height = 200;
+          img.src = url3;
+          document.body.append(img);
+
+          img.addEventListener('load', () => {
+            console.log('все картинки загружены');
+          });
+      });
+  });
+  document.body.append(img);
+</script>
+</body>
+</html>

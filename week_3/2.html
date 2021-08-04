@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление обработчика событий</title>
+</head>
+<body>
+  <div id="container">Привет, LoftSchool !</div>
+  <button id="myButton">Нажми меня</button>
+  <script>
+    // получаем доступ к кнопке
+    const myButton = document.querySelector('#myButton');
+    const container = document.querySelector('#container');
+
+    myButton.addEventListener('click', function (){
+      container.style.color = 'red';
+    });
+    container.addEventListener('click', function (){
+      console.log('клик по контейнеру');
+    });
+  </script>
+</body>
+</html>

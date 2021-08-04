@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Обработка ввода</title>
+</head>
+<body>
+  <input type="text" id="phone">
+  <script>
+    const phone = document.querySelector('#phone');
+
+    phone.addEventListener('keydown', function (event){
+      console.log(event);   // выведен в консоле браузера все доступные виды обработки события объекта event (все его методы)
+      console.log(event.key);   // выведен в консоле браузера вводимый символ
+
+      // отличить буквы от цифр, тире, стрелки влево, вправо, backspace
+      let isValable = false;
+      if (event.key >= 0 ||
+          event.key <= 9 ||
+          event.key == '-' ||
+          event.key == 'ArrowLeft' ||
+          event.key == 'ArrowRight' ||
+          event.key == 'Backspace'){
+          isValable = true;
+          console.log('цифра');
+      } else if (!isValable) {
+          event.preventDefault();  // отменить действие по умолчанию (для input это ввод символов благодаря keydown), то есть если мы нажимаем буквы то ничего не происходит
+          console.log('буква')}
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Promise</title>
+</head>
+<body>
+    <script>
+        const url1 = 'https://www.dispatchnewsdesk.com/wp-content/uploads/2018/08/kosmos-14.jpg';
+        const url2 = 'https://www.onlinetambov.ru/upload/iblock/d1f/d1f42f1a1a3a824b5d0dc31ea773b905.jpg';
+        const url3 = 'https://cdnimg.rg.ru/img/content/213/70/99/iStock-1148609295_d_850.jpg';
+        const url4 = 'https://www.dispatchnewsdesk.com/wp-content/uploads/2018/08/kosmos-14.jpg';
+        const url5 = 'https://www.dispatchnewsdesk.com/wp-content/uploads/2018/08/kosmos-14.jpg';
+
+        function loadImage(url) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.height = 200;
+                img.src = url;
+                document.body.append(img);
+                img.addEventListener('load', ()=>{
+                   resolve();
+                });
+                img.addEventListener('error', ()=>{
+                    reject();
+                });
+            });
+        }
+        loadImage(url1)
+            .then(()=>{ // resolve
+                console.log('картинка 1 загружена');
+                return loadImage(url2); // вернуть новый Promise только когда 1 картинка будет загружена
+                },
+                // вариант прописывания reject для каждого then
+                // если не прописать reject то будет undefined в случае ошибки
+                ()=>{ // reject
+                    console.log('Promise в состоянии reject');
+                    return loadImage(url2);
+                })
+            // укороченный вариант записи resolve
+            .then(() => loadImage(url3)) // пока не разрешиться этот Promise следующий абработчик then не начнет выполнение
+            // таким домиком тоже можно но ухудшает читаемость кода
+            loadImage(url4).then(()=>{
+                console.log('картинка 3 загружена');
+                loadImage(url5).then(()=>{
+                    console.log('картинка 5 загружена');
+                })
+            })
+            /* catch пишется всегда в конце, он ловит все ошибки
+                из указанной цепи then если ошибки не были прописаны ранее,
+                иначе ошибка будет обработана в любом then
+                следующим за ошибочным then или в нем самом
+                При этом весь остаток then-ов поле ошибочного then не будет выполнен
+                пока не будет обработана ошибка либо в другом then либо в catch в конце
+             */
+            .catch(() => {
+                console.log('not ok');
+            });
+    </script>
+</body>
+</html>

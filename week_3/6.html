@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Обход DOM-дерева</title>
+</head>
+<body>
+  <div class="class_1">
+    <p id="hi">Привет</p>
+  </div>
+  <div class="class_1">
+    LoftSchool
+  </div>
+  <div class="class_1 class_2">
+    !!!
+  </div>
+<script>
+  const body = document.body;
+
+  console.log(body.childNodes); // выведет все дочерние тэги (узлы) у body (и текстовые узлы и узлы элементов)
+  // childNodes это объект который притворяется массивом (такой же пример : elements)
+  for (const node of body.childNodes) {
+    console.log(node.nodeType);  // вернет числа: 3 - текстовый узел, 1 - узел элементов
+  }
+  for (const node of body.childNodes) {
+    if (node.nodeType === 3){
+      console.log('текстовый узел', node);
+    } else if (node.nodeType === 1){
+      console.log('узел типа элемент', node);
+    }
+  }
+  for (const node of body.children) { // children тоже объект прикидывающийся массивом
+    console.log(node); // выведет только узлы типа элемент
+  }
+// обратиться к первому и последнему дочернему элементу
+  console.log(body.firstChild); // выведет первый дочерний элемент даже если он текстовый
+  console.log(body.firstElementChild); // выведет первый дочесний узел типа элемент
+  console.log(body.lastChild); // выведет последний дочерний элемент даже если он текстовый
+  console.log(body.lastElementChild); // выведет последний дочерний элемент даже если он текстовый
+  console.log(body.firstElementChild.nextSibling); // выведет первого соседа (даже текстового) первого дочернего элемента
+  console.log(body.firstElementChild.nextElementSibling); // выведет первого соседа (типа элемент) первого дочернего элемента
+  console.log(body.firstElementChild.nextElementSibling.nextElementSibling); // выведет первого соседа (типа элемент) у первого соседа у первого дочернего элемента
+  console.log(body.firstElementChild.nextElementSibling.previousElementSibling); // выведет предыдущего соседа (типа элемент) у первого соседа у первого дочернего элемента
+  console.log(body.parentNode); // обратиться к родителю у body
+
+  // пройтись по всем родительским элементам циклом
+  const hi = document.querySelector('#hi');
+  let cursor = hi;
+  while (cursor = cursor.parentNode){  // когда cursor поднимется до document то parentNode = 0 так как у него нет родителя, тогда while получит 0 и прервется
+    console.log(cursor);
+  }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Работа с формами</title>
+</head>
+<body>
+  <form id="myForm">
+    <div>
+      Имя :<br>
+      <input type="text" name="name">
+    </div>
+    <div>
+      Фамилия :<br>
+      <input type="text" name="lastName">
+    </div>
+    <div>
+      Пол :<br>
+        <select name="gender">
+            <option value="m">М</option>
+            <option value="f">Ж</option>
+        </select>
+    </div>
+    <div>
+      <input type="checkbox" name="auto">Есть автомобиль
+    </div>
+      <br>
+      <button id="sendButton">отправить</button> <!-- действие кнопки по умолчанию это перезагрузка страницы или отправка формы по указанному action -->
+  </form>
+<script>
+  const myForm = document.querySelector('#myForm');
+  const sendButton = document.querySelector('#sendButton');
+  // функция объекта event для присвоения события на кнопку при клике
+  sendButton.addEventListener('click', function (event){
+  event.preventDefault();
+  // самостоятельно обработать данные и отправить их на сервер не перезагружая страницу
+    // myForm.elements дает доступ к свойствам объекта myForm имена которых отлавливаются по атрибуту name в дочерних узлах
+    // у любого текстового поля есть свойство value
+    console.log(myForm.elements.name.value);
+    console.log(myForm.elements.lastName.value);
+    console.log(myForm.elements.gender.value);
+    console.log(myForm.elements.auto.checked); // вернет true если checked иначе false
+  });
+</script>
+</body>
+</html>

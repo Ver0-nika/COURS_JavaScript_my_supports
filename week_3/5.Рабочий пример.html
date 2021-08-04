@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Рабочий пример</title>
+</head>
+<body>
+    <input type="text" id="nameInput">
+    <button id="myButton">Отправить</button>
+    <ul id="list"></ul>
+<script>
+    const myButton = document.querySelector('#myButton');
+    const nameInput = document.querySelector('#nameInput');
+    const list = document.querySelector('#list');
+
+    myButton.addEventListener('click', function (){
+        const newItem = document.createElement('li');
+        newItem.classList.add('item');   // добавление классов для привязки стилей и т.д.
+        newItem.textContent = nameInput.value;
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'удалить';
+        deleteButton.addEventListener('click', function (){
+            list.removeChild(newItem);
+        });
+        newItem.appendChild(deleteButton);  // поместить кнопку удалить внутри li
+        list.appendChild(newItem);  // поместить li в ul
+
+        nameInput.value = '';  // очистить содержимое input
+    });
+</script>
+</body>
+</html>
