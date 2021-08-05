@@ -52,7 +52,7 @@ element.insertBefore(newElement, referenceElement);
  */
 function prepend(what, where) {
   where.insertBefore(what, where.firstElementChild);
-  // where.prepend(what);  // <-- sdelaet to je samoe chto i stroka vishe
+  // where.prepend(what);  // <-- сделает то же самое что и строка выше
 }
 
 /*
@@ -78,7 +78,7 @@ function findAllPSiblings(where) {
   const nextP = [];
 
   for (const el of where.children) {
-    if (el.nextElementSibling && el.nextElementSibling.tagName === 'P') { // tagName - pozvolyaet provodit proverku po tegam
+    if (el.nextElementSibling && el.nextElementSibling.tagName === 'P') { // tagName - позволяет проводить проверку по тегам
       nextP.push(el);
     }
   }
@@ -107,7 +107,7 @@ function findAllPSiblings(where) {
 /*function findError(where) {
   const result = [];
 
-  for (const child of where.childNodes) { // childNodes perebiraet vse uzli vmeste s tekstovimi
+  for (const child of where.childNodes) { // childNodes перебирает все узлы вместе с текстовыми
     result.push(child.textContent);
   }
 
@@ -141,7 +141,7 @@ function deleteTextNodes(where) {
 
     if (el.nodeType === Element.TEXT_NODE) {
       where.removeChild(el);
-      i--; // pri udalenii elementa kolichestvo elementov v massive toje umenshaetsya poetomu nujno skorrectirovat schetchik
+      i--; // при удалении элемента количество элементов в массиве тоже уменьшается поэтому нужно скорректировать счетчик
     } 
   }
 }
@@ -165,7 +165,7 @@ function deleteTextNodesRecursive(where) {
       where.removeChild(el);
       i--;
     } else if (el.nodeType === Element.ELEMENT_NODE) {
-      deleteTextNodesRecursive(el); // esli uzel tipa element to uhodim vglub' dom dereva
+      deleteTextNodesRecursive(el); // если узел типа элемент то уходим вглубь дом дерева
     }
   }
 }
@@ -202,21 +202,24 @@ function collectDOMStat(root) {
       if (child.nodeType === Node.TEXT_NODE) {
         stat.texts++;
       } else if (child.nodeType === Node.ELEMENT_NODE) {
-        if (child.tagName in stat.tags) { // esli v ob'ekte stat po svoistvu tags uje est' info pro teg div (naprimer), to prosto uvelichivaem schetchik
+        if (child.tagName in stat.tags) { // если в объекте stat по свойству tags уже есть инфо про тег div (например),  то просто увеличиваем счетчик
           stat.tags[child.tagName]++;
         } else {
-          stat.tags[child.tagName] = 1; // esli noviy teg to prosto ego sozdadim i prisvoim kolichestvo 1
+          stat.tags[child.tagName] = 1; // если новый тег то просто его создадим и присвоим количество = 1
         }
-
+/* Разница for..in и for..of
+for..in перебирает все перечисляемые ключи свойств объекта
+for..of перебирает значения итерируемого объекта.*/
         for (const className of child.classList) { // Свойство classList возвращает псевдомассив DOMTokenList, содержащий все классы элемента.
-          if (className in stat.classes) { // esli takoy klass uje sushestvuet to uvelichivaem schetchik inache - sozdaem
-            stat.classes[className]++;
+        	// если такой класс уже существует то увеличиваем счетчик, иначе - создаем
+          if (className in stat.classes) { // перебираем объект stat по всем его классам classes (если тег у элемента всегда 1 то классов может быть несколько )
+            stat.classes[className]++; // className - каждый отдельный класс объектa stat
           } else {
             stat.classes[className] = 1;
           }
         }
-
-        scan(child);
+/* если child.nodeType === Node.ELEMENT_NODE, то уходим рекурсивно вглубь */
+        scan(child); 
       }
     }
   }
@@ -259,20 +262,24 @@ function collectDOMStat(root) {
    }
  */
 function observeChildNodes(where, fn) {
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
+  const observer = new MutationObserver((mutations) => { // MutationObserver - функция встроенная в brawser, позволяет следить за изменениями в дом дереве 
+    mutations.forEach((mutation) => { // mutations - список изменений которые произошли в дом дереве 
       if (mutation.type === 'childList') {
         fn({
-          type: mutation.addedNodes.length ? 'insert' : 'remove',
+          type: mutation.addedNodes.length ? 'insert' : 'remove', // если в каждом изменении (mutations) что-то есть значит это 'insert', если пусто значит это 'remove'
           nodes: [
-            ...(mutation.addedNodes.length ? mutation.addedNodes : mutation.removedNodes),
+            ...(mutation.addedNodes.length ? mutation.addedNodes : mutation.removedNodes), // здесь определяем из какого элемента (addedNodes / removedNodes) достать значениe свойства mutation
           ],
         });
       }
     });
   });
 
-  observer.observe(where, { childList: true, subtree: true });
+  observer.observe(where, { childList: true, subtree: true }); // observe (свойство MutationObserver) декларирует старт отслеживания изменений 
+// 1 аргумент - за кем наблюдаем 
+// 2 аргумент - в каких случаях мы будем сигнализировать 
+// childList: true - реагировать на изменения внутри дом дерева 
+// subtree: true - вне зависимости от глубины этих изменений 
 }
 
 export {
