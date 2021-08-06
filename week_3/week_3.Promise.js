@@ -1,7 +1,11 @@
 // структура PROMISE
 const tmpPromise = {
     state: ['pending', 'fulfilled', 'rejected'], // ожидание, завершено, отклонено
-    resolvedQueue: [ // это св-во может наполняться функциями
+    resolvedQueue: [ 
+/* это св-во может наполняться функциями, 
+то есть отловить Promise при переходе из состояния pending в fulfilled
+и в этот момент выполнить очередь функций ниже с помощью THEN:
+*/
         function () {
             console.log('1');
         },
@@ -16,9 +20,45 @@ const tmpPromise = {
     ]
 }
 // синтаксис PROMISE
-const tmpPromise1 = new Promise( function (resolve, reject) { // блокирующая функция выполняющаяся сразу же
+// декларация (только создание) PROMISE это всегда синхронная операция, асинхронность начинается c THEN
+console.log('before Promise');
+const promise = new Promise(function(){
+    console.log('inside Promise'); // блокирующая функция выполняющаяся сразу же
+}
+console.log('after Promise');
+/* вывод:
+before Promise
+inside Promise
+after Promise
+*/
+const Promise = new Promise( function (resolve, reject) {
+    resolve();
 });
+/*
+как только promise создается он в состоянии ожидания (pending)
+как только мы вызываем внутри function resolve() или rejected(), то мы переводим promise в состояние успешно resolve() или неудачно rejected()
+*/
 // пример
+console.log('до Promise');
+function delay(ms) {
+/* при заходе в эту функцию интерпретатор заводит таймер на указанное количество секунд и идет дальше 
+по истечении таймера наступает resolved() и очередь then (если есть)*/
+    return new Promise((resolve) => {
+       setTimeout(() => {
+           resolve();
+           console.log('resolved');
+       }, ms)
+    });
+}
+console.log('после Promise');
+delay(2000);
+/* выводит :
+до Promise
+после Promise
+(через 2 секунды)
+resolved
+*/
+// ----------------------------------------------------------
 function delay(ms) {
     return new Promise((resolve, reject) => {
        setTimeout(() => {
@@ -31,7 +71,7 @@ function delay(ms) {
 }
 const promise = delay(2000);
 console.log('до then');
-// THEN добавляет функции в resolvedQueue в один и тот же Promise
+// PROMISE.THEN добавляет функции в resolvedQueue в один и тот же Promise
 promise.then(() => console.log('шаг 2: выполнено 1'));
 promise.then(() => console.log('шаг 3: выполнено 2'));
 promise.then(() => console.log('шаг 4: выполнено 3'));
